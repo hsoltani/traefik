@@ -2,10 +2,10 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "vault.fullname" . }}
+  name: {{ template "traefik.fullname" . }}
   labels:
-    app: {{ template "vault.fullname" . }}
-    chart: {{ template "vault.chart" . }}
+    app: {{ template "traefik.fullname" . }}
+    chart: {{ template "traefik.chart" . }}
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
 spec:
@@ -14,5 +14,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.vault.size | quote }}
-  {{ include "vault.storageClass" . }}
+  {{ include "traefik.storageClass" . }}
 {{- end -}}
