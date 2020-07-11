@@ -46,10 +46,10 @@ spec:
      ## - name: data
      ##   emptyDir: {}
       volumes:
-        - name: vault-data
+        - name: traefik-data
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
-            claimName: {{ template "vault.fullname" . }}
+            claimName: {{ template "traefik.fullname" . }}
           {{- else }}
           emptyDir: {}
           {{- end }}
