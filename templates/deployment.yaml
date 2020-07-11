@@ -34,7 +34,7 @@ spec:
           
         volumeMounts:
         - name: traefik-data
-          mountPath: /var/run/docker.sock
+          mountPath: "/var/run/docker.sock"
         ports:
         - name: http
           containerPort: 80
@@ -47,6 +47,8 @@ spec:
      ##   emptyDir: {}
       volumes:
         - name: traefik-data
+          hostPath:
+            path: /var/run/docker.sock  
           {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ template "traefik.fullname" . }}
