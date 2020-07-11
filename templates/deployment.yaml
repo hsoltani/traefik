@@ -35,12 +35,6 @@ spec:
         volumeMounts:
         - name: traefik-data
           mountPath: /var/run/docker.sock
-      #  - name: vault-policies
-       #   mountPath: /vault/policies
-      #  - name: vault-data
-       #   mountPath: /vault/data
-    #    - name: vault-logs
-    #      mountPath: /vault/logs
         ports:
         - name: http
           containerPort: 80
@@ -52,34 +46,13 @@ spec:
      ## - name: data
      ##   emptyDir: {}
       volumes:
-   #     - name: vault-data
-    #      {{- if .Values.persistence.enabled }}
-     #     persistentVolumeClaim:
-      #      claimName: {{ template "vault.fullname" . }}
-       #   {{- else }}
-        #  emptyDir: {}
-         # {{- end }}
-    #    - name: vault-config
-     #     {{- if .Values.persistence.enabled }}
-      #    persistentVolumeClaim:
-      #      claimName: {{ template "vault.fullname" . }}
-       #   {{- else }}
-        #  emptyDir: {}
-       #   {{- end }}
-      #  - name: vault-policies
-      #    {{- if .Values.persistence.enabled }}
-      #    persistentVolumeClaim:
-      #      claimName: {{ template "vault.fullname" . }}
-      #    {{- else }}
-      #    emptyDir: {}
-      #    {{- end }}
-      #  - name: vault-logs
-       #   {{- if .Values.persistence.enabled }}
-       #   persistentVolumeClaim:
-       #     claimName: {{ template "vault.fullname" . }}
-       #   {{- else }}
-       #   emptyDir: {}
-       #   {{- end }}
+        - name: vault-data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "vault.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
