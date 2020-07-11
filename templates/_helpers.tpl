@@ -39,7 +39,7 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Return the proper Vault image name
+Return the proper traefik image name
 */}}
 {{- define "traefik.image" -}}
 {{- $registryName := .Values.image.registry -}}
