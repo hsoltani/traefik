@@ -6,9 +6,10 @@ nodeSelector: {}
 
 traefik:
   image:
-    registry: docker.io
     repository: traefik
     tag: 2.1.8
+
+
 
 
 persistence:
