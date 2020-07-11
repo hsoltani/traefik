@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: traefik
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ template "traefik.image" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
         - "--log.level=DEBUG"
