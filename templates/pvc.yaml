@@ -13,6 +13,6 @@ spec:
     - {{ .Values.persistence.traefik.accessMode | quote }}
   resources:
     requests:
-      storage: {{ .Values.persistence.vault.size | quote }}
+      storage: {{ .Values.persistence.traefik.size | quote }}
   {{ include "traefik.storageClass" . }}
 {{- end -}}
