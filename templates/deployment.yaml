@@ -1,43 +1,40 @@
-apiVersion: {{ template "vault.deployment.apiVersion" . }}
+apiVersion: {{ template "traefik.deployment.apiVersion" . }}
 kind: Deployment
 metadata:
-  name: {{ template "vault.fullname" . }}
+  name: {{ template "traefik.fullname" . }}
   labels:
-    app: {{ template "vault.name" . }}
-    chart: {{ template "vault.chart" . }}
+    app: {{ template "traefik.name" . }}
+    chart: {{ template "traefik.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ template "vault.name" . }}
+      app: {{ template "traefik.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "vault.name" . }}
+        app: {{ template "traefik.name" . }}
         release: {{ .Release.Name }}
     spec:
-      securityContext:
-        runAsNonRoot: {{ .Values.securityContext.runAsNonRoot }}
-        runAsUser: {{ .Values.securityContext.runAsUser }}
-        capabilities.add: {{ .Values.securityContext.capabilities.add }}
       containers:
-      - name: vault
-        image: {{ .Values.vault.image.repository }}:{{ .Values.vault.image.tag }}
+      - name: traefik
+        image: {{ .Values.traefik.image.repository }}:{{ .Values.traefik.image.tag }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         args:
-        - "oadm policy add-scc-to-user anyuid -z default"
-        - "server -config=/vault/config/local.json -disable_mlock=true"
+        - "--log.level=DEBUG"
+        - "--api.insecure=true"
+        - "--providers.docker=true"
+        - "--providers.docker.exposedbydefault=false"
+        - "--entryPoints.web.address=:80"
+        - "--entryPoints.web.forwardedHeaders.insecure"
         env:
-          - name: VAULT_LOCAL_CONFIG
-            value: '{"storage": {"file": { "path": "/vault/data" },disable_mlock=true}, "listener": {"tcp":{"address": "0.0.0.0:8200","tls_disable":"1"}}}'
-          - name: VAULT_ADDR
-            value: http://vault:8200
+          
         volumeMounts:
-       # - name: vault-config
-        #  mountPath: /vault/config
+        - name: traefik-data
+          mountPath: /var/run/docker.sock
       #  - name: vault-policies
        #   mountPath: /vault/policies
       #  - name: vault-data
@@ -45,8 +42,11 @@ spec:
     #    - name: vault-logs
     #      mountPath: /vault/logs
         ports:
-        - name: vault
-          containerPort: 8200
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
           protocol: TCP
      ## volumes:
      ## - name: data
