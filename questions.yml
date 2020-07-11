@@ -15,7 +15,7 @@ questions:
   subquestions:
   - variable: traefik.image.repository
     default: "traefik"
-    description: "vault image name"
+    description: "traefik image name"
     type: string
     label: traefik Image Name
   - variable: traefik.image.tag
@@ -37,7 +37,7 @@ questions:
   description: "Enable persistent volume for traefik"
   type: boolean
   required: true
-  label: vault Persistent Volume Enabled
+  label: traefik Persistent Volume Enabled
   show_subquestion_if: true
   group: "traefik Settings"
   subquestions:
